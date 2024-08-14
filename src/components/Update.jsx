@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export default function Insert() {
+export default function Update() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const initialValue = {
     bookName: "",
     author: "",
@@ -8,34 +13,54 @@ export default function Insert() {
     quantity: "",
   };
   const [bookDetails, setBookDetails] = useState(initialValue);
-
-  const handleSubmit = async (e) => {
+  //  to update
+  const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:5000/books`, {
-        method: "POST",
+      const res = await fetch(`http://localhost:5000/books/${id}`, {
+        method: "PUT",
         headers: {
-          "content-type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(bookDetails),
       });
-      if (res.status === 201) {
-        // const result = await res.json();
-        alert("Data has inserted successfully.");
-        setBookDetails(initialValue);
+
+      const data = await res.json();
+      if (data.success) {
+        navigate("/display");
+      } else {
+        alert(data.message);
       }
     } catch (err) {
       console.log(err);
+      alert(err?.message);
     }
   };
+
+  //   fetch the targeted book details
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/books/${id}`);
+        if (res.status === 200) {
+          const data = await res.json();
+          const { _id, ...bookInfo } = data;
+          setBookDetails(bookInfo);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [id]);
 
   return (
     <section>
       <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800">
         <h2 className="text-lg font-semibold text-gray-700 capitalize dark:text-white">
-          Insert A Book Details
+          Update A Book Details
         </h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleUpdate}>
           <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
             <div>
               <label
@@ -109,7 +134,7 @@ export default function Insert() {
           </div>
           <div className="flex justify-end mt-6">
             <button className="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
-              Insert
+              Update
             </button>
           </div>
         </form>
