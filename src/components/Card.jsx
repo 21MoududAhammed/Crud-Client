@@ -10,7 +10,7 @@ export default function Card({ book, onRemove }) {
 
   const handleDelete = async (_id) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/v1/book/${_id}`, {
+      const res = await fetch(`https://books-store-server.vercel.app/api/v1/book/${_id}`, {
         method: "DELETE",
       });
       const result = await res.json();
