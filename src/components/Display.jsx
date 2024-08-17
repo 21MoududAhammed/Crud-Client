@@ -14,7 +14,7 @@ export default function Display() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/v1/book`);
+        const res = await fetch(`https://books-store-server.vercel.app/api/v1/book`);
         if (res.status === 200) {
           const result = await res.json();
           setBooks(result.data.books);
