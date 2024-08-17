@@ -14,10 +14,10 @@ export default function Display() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/books`);
+        const res = await fetch(`http://localhost:4000/api/v1/book`);
         if (res.status === 200) {
-          const data = await res.json();
-          setBooks(data);
+          const result = await res.json();
+          setBooks(result.data.books);
         }
       } catch (err) {
         console.log(err);

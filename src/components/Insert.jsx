@@ -10,7 +10,7 @@ export default function Insert() {
 
   const onSubmit = async (data) => {
     try {
-      const res = await fetch(`http://localhost:5000/books`, {
+      const res = await fetch(`http://localhost:4000/api/v1/book`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

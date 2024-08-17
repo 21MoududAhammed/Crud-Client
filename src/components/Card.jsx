@@ -10,15 +10,16 @@ export default function Card({ book, onRemove }) {
 
   const handleDelete = async (_id) => {
     try {
-      const res = await fetch(`http://localhost:5000/books/${_id}`, {
+      const res = await fetch(`http://localhost:4000/api/v1/book/${_id}`, {
         method: "DELETE",
       });
       const result = await res.json();
-      if (result.success) {
+      
+      if (result.status === 'success') {
         alert(result?.message);
         onRemove(_id);
       }
-      // console.log(result);
+     
     } catch (err) {
       console.log(err);
     }

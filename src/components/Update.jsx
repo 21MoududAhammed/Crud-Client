@@ -15,7 +15,7 @@ export default function Update() {
 
   const onSubmit = async (data) => {
     try {
-      const res = await fetch(`http://localhost:5000/books/${id}`, {
+      const res = await fetch(`http://localhost:4000/api/v1/book/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -24,7 +24,8 @@ export default function Update() {
       });
 
       const response = await res.json();
-      if (response.success) {
+
+      if (response.status === "success") {
         navigate("/display");
       } else {
         alert(response.message);
@@ -39,10 +40,10 @@ export default function Update() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/books/${id}`);
+        const res = await fetch(`http://localhost:4000/api/v1/book/${id}`);
         if (res.status === 200) {
-          const data = await res.json();
-          const { _id, ...bookInfo } = data;
+          const result = await res.json();
+          const { _id, ...bookInfo } = result.data.book;
           // Populate the form fields with fetched data
           setValue("bookName", bookInfo.bookName);
           setValue("author", bookInfo.author);
@@ -65,7 +66,10 @@ export default function Update() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
             <div>
-              <label className="text-gray-700 dark:text-gray-200" htmlFor="bookName">
+              <label
+                className="text-gray-700 dark:text-gray-200"
+                htmlFor="bookName"
+              >
                 Book Name
               </label>
               <input
@@ -76,11 +80,16 @@ export default function Update() {
                 } rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring`}
                 {...register("bookName", { required: "Book name is required" })}
               />
-              {errors.bookName && <p className="text-red-500">{errors.bookName.message}</p>}
+              {errors.bookName && (
+                <p className="text-red-500">{errors.bookName.message}</p>
+              )}
             </div>
 
             <div>
-              <label className="text-gray-700 dark:text-gray-200" htmlFor="author">
+              <label
+                className="text-gray-700 dark:text-gray-200"
+                htmlFor="author"
+              >
                 Author
               </label>
               <input
@@ -91,7 +100,9 @@ export default function Update() {
                 } rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring`}
                 {...register("author", { required: "Author is required" })}
               />
-              {errors.author && <p className="text-red-500">{errors.author.message}</p>}
+              {errors.author && (
+                <p className="text-red-500">{errors.author.message}</p>
+              )}
             </div>
 
             <div>
@@ -108,9 +119,11 @@ export default function Update() {
                   required: "Book ID is required",
                   validate: {
                     positiveNumber: (value) =>
-                      parseFloat(value) > 0 || "Book ID must be a positive number",
+                      parseFloat(value) > 0 ||
+                      "Book ID must be a positive number",
                     isInteger: (value) =>
-                      Number.isInteger(parseFloat(value)) || "Book ID must be an integer",
+                      Number.isInteger(parseFloat(value)) ||
+                      "Book ID must be an integer",
                   },
                 })}
               />
@@ -118,7 +131,10 @@ export default function Update() {
             </div>
 
             <div>
-              <label className="text-gray-700 dark:text-gray-200" htmlFor="quantity">
+              <label
+                className="text-gray-700 dark:text-gray-200"
+                htmlFor="quantity"
+              >
                 Quantity
               </label>
               <input
@@ -131,13 +147,17 @@ export default function Update() {
                   required: "Quantity is required",
                   validate: {
                     positiveNumber: (value) =>
-                      parseFloat(value) > 0 || "Quantity must be a positive number",
+                      parseFloat(value) > 0 ||
+                      "Quantity must be a positive number",
                     isInteger: (value) =>
-                      Number.isInteger(parseFloat(value)) || "Quantity must be an integer",
+                      Number.isInteger(parseFloat(value)) ||
+                      "Quantity must be an integer",
                   },
                 })}
               />
-              {errors.quantity && <p className="text-red-500">{errors.quantity.message}</p>}
+              {errors.quantity && (
+                <p className="text-red-500">{errors.quantity.message}</p>
+              )}
             </div>
           </div>
           <div className="flex justify-end mt-6">
