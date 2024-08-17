@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export default function Insert() {
   const {
@@ -18,7 +19,7 @@ export default function Insert() {
         body: JSON.stringify(data),
       });
       if (res.status === 201) {
-        alert("Data has been inserted successfully.");
+        toast("Data has been inserted successfully.");
         reset();
       }
     } catch (err) {

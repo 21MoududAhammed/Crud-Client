@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 /* eslint-disable react/prop-types */
 
 export default function Card({ book, onRemove }) {
@@ -16,7 +18,7 @@ export default function Card({ book, onRemove }) {
       const result = await res.json();
       
       if (result.status === 'success') {
-        alert(result?.message);
+        toast("Deleted Successfully");
         onRemove(_id);
       }
      
